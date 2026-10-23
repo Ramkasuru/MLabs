@@ -2,6 +2,17 @@
 
 *Your next masterpiece.* A complete music studio built from the ground up: step sequencer, piano roll, playlist, a 16-insert mixer with 21 effects, and AI that composes, mixes, masters and turns your hum into any instrument. Python audio engine (numpy) with an HTML/CSS interface in a native desktop window (pywebview).
 
+![MLabs: playlist with pattern, audio and automation clips, browser and mixer](docs/screenshots/studio.png)
+
+## Screenshots
+
+| | |
+|---|---|
+| ![Plugin window for the EQ with sectioned knobs, on top of the mixer](docs/screenshots/mixer-eq.png) | ![Plugin picker with generators and effects, drawn previews and a category bar](docs/screenshots/plugin-picker.png) |
+| **Every effect has its own plugin window** (here the EQ: low shelf, sweepable mid, high shelf) | **Plugin picker (F8):** 11 drums, 18 synth/bass/keys presets, samplers and 21 effects |
+| ![Piano roll with a chord progression](docs/screenshots/piano-roll.png) | ![AI Composer in the dark theme with the Step Rack](docs/screenshots/ai-composer-dark.png) |
+| **Piano roll** with long, scrollable keys from C0 to B8 | **AI Composer** (text to music on your GPU), shown in the Dark theme |
+
 ## Install
 
 MLabs runs on **Windows 10/11** (the window uses Microsoft Edge WebView2, which Windows 11 already has; on Windows 10 get the free "Evergreen" runtime from Microsoft if the window stays blank). macOS and Linux are untested.
