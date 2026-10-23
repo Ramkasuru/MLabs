@@ -134,6 +134,39 @@ Shortcuts: Space play/stop · Ctrl+Z undo · Ctrl+S save · Ctrl+O open · Ctrl+
 
 See [FEATURES.md](FEATURES.md) for the full feature list and roadmap.
 
+## Built with
+
+MLabs stands on these open-source projects. Thank you to everyone who maintains them.
+
+**Audio, app and AI**
+
+| Project | Used for |
+|---|---|
+| [NumPy](https://github.com/numpy/numpy) and [SciPy](https://github.com/scipy/scipy) | The whole audio engine: synthesis, effects, mixing, resampling |
+| [pywebview](https://github.com/r0x0r/pywebview) | The native desktop window around the HTML/CSS interface |
+| [python-sounddevice](https://github.com/spatialaudio/python-sounddevice) | Live playback, recording and the tuner |
+| [python-soundfile](https://github.com/bastibe/python-soundfile) | Reading and writing WAV, FLAC and MP3 |
+| [psutil](https://github.com/giampaolo/psutil) | CPU and RAM in the performance monitor |
+| [PyTorch](https://github.com/pytorch/pytorch) and [Transformers](https://github.com/huggingface/transformers) | Running the AI models on your GPU |
+| [AudioCraft / MusicGen](https://github.com/facebookresearch/audiocraft) (Meta) | AI Composer and Perfect pitch AI (weights are non-commercial, CC-BY-NC 4.0) |
+| [pedalboard](https://github.com/spotify/pedalboard) (Spotify) | Optional VST3 plugin hosting (GPL-3, not installed by default) |
+
+**Sounds and fonts**
+
+| Project | Used for |
+|---|---|
+| [VCSL](https://github.com/sgossner/VCSL) (Versilian Community Sample Library) | Free drum and percussion samples from `get_sounds.py` (CC0) |
+| [Inter](https://github.com/rsms/inter), [Montserrat](https://github.com/JulietaUla/Montserrat), [Anton](https://github.com/googlefonts/AntonFont) | Interface, headings and logo fonts (SIL Open Font License) |
+
+**Development tools**
+
+| Project | Used for |
+|---|---|
+| [Claude Code](https://github.com/anthropics/claude-code) | AI pair programmer used to build and test MLabs |
+| [UI UX Pro Max skill](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) | Design system guidance for the interface |
+
+Licences for everything bundled or downloaded are listed in [THIRD_PARTY.md](THIRD_PARTY.md).
+
 ## Open-source generative models to choose from
 
 Check each model card for current license terms. Rows marked * come from third-party reports and are not yet confirmed against the model card.
