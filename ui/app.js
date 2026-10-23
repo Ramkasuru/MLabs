@@ -61,6 +61,13 @@ const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
 const color = pi => P?.patterns[pi]?.color || COLORS[pi % COLORS.length];
 const base = p => p.split(/[\\/]/).pop().replace(/\.wav$/i, "");
 
+// work-in-progress notice: shown once per launch, closes itself after 5 s (or on click)
+function showNotice() {
+  const n = $("#notice");
+  n.hidden = false;
+  n.onclick = () => { n.hidden = true; };
+  setTimeout(() => { n.hidden = true; }, 5000);
+}
 function toast(msg) {
   const t = $("#toast");
   t.textContent = msg;
@@ -1979,6 +1986,9 @@ window.addEventListener("pywebviewready", async () => {
   await traced;  // the studio opens once the clef is fully drawn (and the engine is ready)
   $("#splash").classList.add("gone");
   call("boot_done");  // leave full-screen startup for a maximized window at native resolution
+  if ($("#tips").hidden) setTimeout(showNotice, 600);  // after the tips if they're up, else right after the splash
+  else new MutationObserver((_, obs) => { if ($("#tips").hidden) { obs.disconnect(); setTimeout(showNotice, 300); } })
+    .observe($("#tips"), { attributes: true, attributeFilter: ["hidden"] });
   setTimeout(() => call("ai_warmup", "composer"), 1500);  // load the AI in the background so the first Generate is quick
   setTimeout(() => $("#splash").remove(), 700);
 });

@@ -588,3 +588,12 @@ button:active:not(:disabled) { transform: scale(.97); }
 .fxswitch .sled { width: 8px; height: 8px; border-radius: 50%; background: rgba(232, 243, 248, .2); }
 .fxswitch.on .sled { background: var(--warm); box-shadow: 0 0 6px var(--warm); }
 .params .label .openwin { margin-left: 8px; padding: 1px 8px; font-size: 11px; }
+
+/* ---------- work-in-progress notice (auto-closes after 5 s) ---------- */
+.notice.glass { position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 60; width: min(440px, 90vw);
+  padding: 18px 20px 14px; border-radius: var(--r-md); cursor: pointer; animation: panelIn .25s ease-out; }
+.notice strong { font: 600 15px var(--display); letter-spacing: .04em; color: var(--warm); }
+.notice p { margin: 8px 0 12px; font-size: 13px; line-height: 1.45; color: var(--ink-2); }
+.notice .nbar { height: 3px; border-radius: 2px; background: var(--warm); transform-origin: left; animation: nbar 5s linear forwards; }
+@keyframes nbar { to { transform: scaleX(0); } }
+@media (prefers-reduced-motion: reduce) { .notice, .notice .nbar { animation: none; } }
