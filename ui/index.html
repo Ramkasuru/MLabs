@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MLabs</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="fog" aria-hidden="true"><i></i><i></i><i></i></div>
+
+  <!-- the MLabs wordmark: "MLAB" in Anton + an S drawn as a treble clef, sized to
+       Anton's cap height (86 units at 100px); the clef reaches a little above and below, like a real clef. Same drawing as logo.svg; colored by CSS `color`. -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <symbol id="wordmark" viewBox="-6 -14 280 122">
+        <text x="-3" y="86" font-family="Anton, Impact, sans-serif" font-size="100" fill="currentColor">MLAB</text>
+        <g transform="translate(212 0)" fill="none" stroke="currentColor" stroke-width="10" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M17 93C27 93 29 84 27 75L18 17C16 3 31 -3 33 10C35 23 22 31 14 39C4 49 4 65 17 71C29 77 43 70 43 57C43 45 31 41 24 46C17 51 18 61 27 61"/>
+          <circle cx="13" cy="90" r="7.5" fill="currentColor" stroke="none"/>
+        </g>
+      </symbol>
+    </defs>
+  </svg>
+
+  <!-- boot screen (full screen): the treble clef is traced stroke by stroke; when the trace completes and the
+       engine has answered, the studio opens. Inline (not <use>) so only this clef animates. -->
+  <div id="splash" role="status" aria-label="MLabs is starting">
+    <div class="splash-mark">
+      <h1 class="splash-logo"><svg class="splash-w" viewBox="-6 -14 280 122" role="img" aria-label="MLabs">
+        <text class="sw-text" x="-3" y="86" font-family="Anton, Impact, sans-serif" font-size="100" fill="currentColor">MLAB</text>
+        <g transform="translate(212 0)" fill="none" stroke="currentColor" stroke-width="10" stroke-linecap="round" stroke-linejoin="round">
+          <path id="splashClef" d="M17 93C27 93 29 84 27 75L18 17C16 3 31 -3 33 10C35 23 22 31 14 39C4 49 4 65 17 71C29 77 43 70 43 57C43 45 31 41 24 46C17 51 18 61 27 61"/>
+          <circle id="splashDot" cx="13" cy="90" r="7.5" fill="currentColor" stroke="none"/>
+        </g>
+      </svg></h1>
+      <p>Your next masterpiece</p>
+      <small id="splashMsg">Waking the engine…</small>
+    </div>
+  </div>
+
+  <header class="topbar glass">
+    <div class="brand"><svg class="brand-w" viewBox="-6 -14 280 122" role="img" aria-label="MLabs"><use href="#wordmark"/></svg></div>
+    <nav class="menubar" id="menubar" role="menubar" aria-label="Main menu"></nav>
+    <div class="transport">
+      <button id="play" class="chip big" title="Play / stop (Space)" aria-label="Play">
+        <svg viewBox="0 0 16 16"><path d="M4 2.5v11l9-5.5z"/></svg>
+      </button>
+      <button id="stop" class="chip" title="Stop" aria-label="Stop">
+        <svg viewBox="0 0 16 16"><rect x="3.5" y="3.5" width="9" height="9" rx="1.5"/></svg>
+      </button>
+      <button id="rec" class="chip rec" title="Record your instrument or mic (and MIDI notes while playing)" aria-label="Record" aria-pressed="false">
+        <svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="4.6"/></svg>
+      </button>
+      <div class="seg" role="group" aria-label="Play mode">
+        <button id="modePat" class="on" title="Loop the current pattern">PAT</button>
+        <button id="modeSong" title="Play the playlist arrangement">SONG</button>
+      </div>
+      <button id="metro" class="chip" title="Metronome" aria-label="Metronome">
+        <svg viewBox="0 0 16 16"><path d="M6.2 1.5h3.6L13 14.5H3zM8 4v6.5l3.5-3" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="clock" aria-live="off"><span id="time">1:01:00</span><small>BAR · BEAT · STEP</small></div>
+    <label class="field">BPM <input id="bpm" type="number" min="40" max="240"></label>
+    <label class="field">Swing <input id="swing" type="range" min="0" max="100"></label>
+    <label class="field"><select id="patSel" aria-label="Current pattern" title="Current pattern"></select></label>
+    <button id="newPat" class="chip" title="New pattern" aria-label="New pattern">+</button>
+    <div id="quick" class="quick" role="toolbar" aria-label="Quick buttons"></div>
+  </header>
+
+  <aside class="browser glass" aria-label="Browser">
+    <div class="tabs" role="tablist">
+      <button data-tab="samp" class="on">SOUNDS</button>
+      <button data-tab="inst">INSTRUMENTS</button>
+      <button data-tab="fx">FX</button>
+      <button data-tab="pitch">PITCH</button>
+      <button data-tab="ai">AI</button>
+      <button class="fold-browser" title="Collapse the browser (Alt+F8)" aria-label="Collapse the browser" onclick="toggleArea('no-browser')">«</button>
+    </div>
+    <div id="browserList" class="list"></div>
+  </aside>
+
+  <main class="playlist glass" aria-label="Playlist">
+    <div class="ph"><h2>Playlist · Arrangement</h2></div>
+    <div class="scroll" id="plScroll"><div class="arr" id="arr"></div></div>
+  </main>
+
+  <section id="rackPanel" class="panel glass" style="left:300px; top:150px" aria-label="Step Rack">
+    <header><h2>Step Rack</h2><input id="patName" aria-label="Pattern name">
+      <button class="x" data-close="rackPanel" aria-label="Close">×</button></header>
+    <div id="rack" class="rack"></div>
+  </section>
+
+  <section id="rollPanel" class="panel glass" style="left:520px; top:96px" hidden aria-label="Piano roll">
+    <header><h2 id="rollTitle">Piano roll</h2>
+      <button class="x" data-close="rollPanel" aria-label="Close">×</button></header>
+    <div class="roll"><div class="keys" id="keys"></div><div class="notes" id="notes"></div></div>
+  </section>
+
+  <section id="ioPanel" class="panel glass io" style="left:420px; top:120px" hidden aria-label="Audio and MIDI">
+    <header><h2>Audio &amp; MIDI</h2><button class="x" data-close="ioPanel" aria-label="Close">×</button></header>
+    <label class="iorow">Output <select id="outDev" aria-label="Output device"></select></label>
+    <label class="iorow">Input <select id="inDev" aria-label="Input device"></select></label>
+    <div class="label">Listening · the AI hears your instrument</div>
+    <div class="listen">
+      <div class="inmeter" aria-hidden="true"><i id="inLevel"></i></div>
+      <div class="tuner"><span id="tuneNote">–</span><small id="tuneCents">play a note</small></div>
+    </div>
+    <div class="iorow">
+      <button id="ioRec">● Record take</button>
+      <span id="recTime" class="fxin"></span>
+    </div>
+    <div class="iorow" id="takeRow" hidden>
+      <span id="takeName" class="fxin"></span>
+      <button id="takeNotes" title="Pitch-track the take into the piano roll of the selected channel">Turn into notes</button>
+    </div>
+    <div class="label">MIDI keyboard</div>
+    <div id="midiStatus" class="fxin">Looking for MIDI devices…</div>
+  </section>
+
+  <section id="exportPanel" class="panel glass io" style="left:520px; top:160px" hidden aria-label="Export">
+    <header><h2>Export audio</h2><button class="x" data-close="exportPanel" aria-label="Close">×</button></header>
+    <label class="iorow">Format <select id="expFmt" aria-label="Export format"></select></label>
+    <label class="iorow">Sample rate <select id="expRate" aria-label="Sample rate"></select></label>
+    <div class="fxin" id="expNote"></div>
+    <div class="iorow">
+      <button id="expSong" class="on">Export song…</button>
+      <button id="expStems">Export stems…</button>
+    </div>
+  </section>
+
+  <section id="pickerPanel" class="panel glass io picker" hidden aria-label="Plugin picker">
+    <header><h2>Plugin picker</h2><span class="label">F8</span><button class="x" data-close="pickerPanel" aria-label="Close">×</button></header>
+    <input id="pickQuery" type="search" placeholder="Search instruments, effects, AI…" aria-label="Search plugins">
+    <div id="pickGrid" class="pgrid"></div>
+    <nav id="pickCats" class="pcats" aria-label="Plugin categories"></nav>
+  </section>
+
+  <section id="tapPanel" class="panel glass io tapper" hidden aria-label="Tempo tapper">
+    <header><h2>Tempo tapper</h2><button class="x" data-close="tapPanel" aria-label="Close">×</button></header>
+    <div class="tapbpm"><span id="tapBpm">–</span><small>BPM</small></div>
+    <button id="tapBtn" class="tapbtn">Tap</button>
+    <div class="fxin">Tap along to the beat (click, or press Enter/Space on the button).</div>
+    <div class="iorow"><span class="grow"></span><button id="tapApply" class="on">Use this tempo</button></div>
+  </section>
+
+  <section id="infoPanel" class="panel glass io" hidden aria-label="Project info">
+    <header><h2>Project info</h2><span class="label">F11</span><button class="x" data-close="infoPanel" aria-label="Close">×</button></header>
+    <label class="iorow">Title <input id="info_title"></label>
+    <label class="iorow">Author <input id="info_author"></label>
+    <label class="iorow">Genre <input id="info_genre"></label>
+    <label class="iorow" style="align-items:flex-start">Notes <textarea id="info_comments" rows="4"></textarea></label>
+    <div class="iorow"><span class="grow"></span><button id="infoSave" class="on">Save info</button></div>
+  </section>
+
+  <section id="fxWin" class="panel glass io fxwin" hidden aria-label="Plugin window">
+    <header><h2 id="fxWinTitle">Effect</h2>
+      <button id="fxWinOn" class="fxswitch" title="Bypass on/off"><span class="sled"></span>On</button>
+      <button id="fxWinReset" title="Reset every knob to its default">Reset</button>
+      <button class="x" data-close="fxWin" aria-label="Close">×</button></header>
+    <div id="fxWinDesc" class="fxin"></div>
+    <div id="fxWinBody" class="fxbody"></div>
+  </section>
+
+  <section id="autoPanel" class="panel glass io autoed" hidden aria-label="Automation clip">
+    <header><h2 id="autoTitle">Automation</h2><button class="x" data-close="autoPanel" aria-label="Close">×</button></header>
+    <svg id="autoSvg" class="autosvg" preserveAspectRatio="none" role="img" aria-label="Automation curve"></svg>
+    <div class="fxin" id="autoInfo"></div>
+    <div class="iorow">
+      <button id="autoUp">Ramp up</button><button id="autoDown">Ramp down</button><button id="autoFlat">Flat</button>
+      <label class="iorow" style="gap:6px">Length <input id="autoBars" type="number" min="1" max="32" style="width:56px"> bars</label>
+      <span class="grow"></span><button id="autoDelete">Delete clip</button>
+    </div>
+  </section>
+
+  <section id="perfPanel" class="panel glass io" hidden aria-label="Plugin performance monitor">
+    <header><h2>Performance</h2><button class="x" data-close="perfPanel" aria-label="Close">×</button></header>
+    <div id="perfStats" class="pstats"></div>
+    <div class="label">Render time per mixer track (last play)</div>
+    <div id="perfTracks" class="ptracks"></div>
+  </section>
+
+  <section id="quickPanel" class="panel glass io" hidden aria-label="Customize quick buttons">
+    <header><h2>Quick buttons</h2><button class="x" data-close="quickPanel" aria-label="Close">×</button></header>
+    <div class="fxin">Tick the buttons you want beside "+" in the top bar and order them with ↑ ↓. Saved for next time.</div>
+    <div id="quickList" class="qlist"></div>
+  </section>
+
+  <button id="openBrowser" class="chip" title="Show the browser (Alt+F8)" aria-label="Show the browser" onclick="toggleArea('no-browser')">»</button>
+  <button id="foldMixer" class="chip" title="Collapse or expand the mixer" aria-label="Collapse the mixer"
+    onclick="document.getElementById('mixer').classList.toggle('collapsed')">▾</button>
+  <footer id="mixer" class="mixer glass" aria-label="Mixer"></footer>
+
+  <!-- tips bar: always on if enabled in Options, otherwise only on the very first launch -->
+  <div id="tips" class="tips glass" role="dialog" aria-labelledby="tipCount" hidden>
+    <div class="tiphead"><span class="label" id="tipCount">Tip</span>
+      <button id="tipClose" class="chip" aria-label="Close tips">×</button></div>
+    <p id="tipText" style="margin:0"></p>
+    <div class="tipacts">
+      <button id="tipSkip" title="Don't show tips again (turn them back on in Options)">Skip tips</button>
+      <span class="grow"></span>
+      <button id="tipNext">Next tip</button>
+      <button id="tipDone" class="on">Got it</button>
+    </div>
+  </div>
+
+  <div id="toast" role="status"></div>
+  <script src="app.js"></script>
+</body>
+</html>

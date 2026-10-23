@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 210" role="img" aria-labelledby="t">
+  <title id="t">MLabs: your next masterpiece</title>
+  <!-- needs the Anton font installed (ui/fonts/Anton-Regular.ttf); the app loads it itself -->
+  <rect width="400" height="210" fill="#0B0B0B"/>
+  <g transform="translate(45 38) scale(1.2)" color="#D7332B">
+    <text x="-3" y="86" font-family="Anton, Impact, sans-serif" font-size="100" fill="currentColor">MLAB</text>
+    <!-- the S is a treble clef, drawn at Anton's weight -->
+    <g transform="translate(212 0)" fill="none" stroke="currentColor" stroke-width="10" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M17 93C27 93 29 84 27 75L18 17C16 3 31 -3 33 10C35 23 22 31 14 39C4 49 4 65 17 71C29 77 43 70 43 57C43 45 31 41 24 46C17 51 18 61 27 61"/>
+      <circle cx="13" cy="90" r="7.5" fill="currentColor" stroke="none"/>
+    </g>
+  </g>
+  <text x="200" y="188" text-anchor="middle" font-family="Anton, Impact, sans-serif" font-size="15" letter-spacing="2.8" fill="#D7332B">YOUR NEXT MASTERPIECE</text>
+</svg>

@@ -1,0 +1,16 @@
+# MLabs core (Python 3.12+; developed on 3.14, Windows 11)
+numpy
+scipy
+pywebview
+sounddevice
+soundfile
+psutil
+
+# AI (Composer, Perfect pitch AI). On an NVIDIA GPU install the CUDA build of torch first, e.g.
+#   pip install torch --index-url https://download.pytorch.org/whl/cu130
+torch
+transformers
+
+# Optional, NOT installed by default: VST3 plugin hosting. pedalboard is GPL-3 licensed;
+# installing it is the user's choice and MLabs runs without it.
+#   pip install pedalboard

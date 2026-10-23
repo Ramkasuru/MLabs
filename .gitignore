@@ -1,0 +1,16 @@
+# Python
+__pycache__/
+*.pyc
+
+# per-user state (theme, wallpaper path, devices, starred sounds)
+settings.json
+settings.json.tmp
+
+# audio the app creates on this machine
+generated/
+recordings/
+renders/
+
+# sound libraries: large, and each has its own licence. Fetch VCSL with  python get_sounds.py
+samples/*
+!samples/README.md
