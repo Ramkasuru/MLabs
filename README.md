@@ -6,6 +6,12 @@
 
 MLabs runs on **Windows 10/11** (the window uses Microsoft Edge WebView2, which Windows 11 already has; on Windows 10 get the free "Evergreen" runtime from Microsoft if the window stays blank). macOS and Linux are untested.
 
+**Install as is (everything, in one go):** with Python 3.12+ and Git installed, paste this into **cmd**. It installs every package, the free drum samples and the GPU build of PyTorch, then starts MLabs:
+```
+git clone https://github.com/Ramkasuru/MLabs.git && cd MLabs && pip install torch --index-url https://download.pytorch.org/whl/cu130 && pip install -r requirements.txt && python get_sounds.py && python app.py
+```
+(No NVIDIA GPU? It still works, just slower: the AI runs on the CPU.) Prefer to choose what gets installed? Follow the steps below.
+
 1. Install **Python 3.12 or newer** from [python.org](https://www.python.org/downloads/) (tick "Add python.exe to PATH") and **Git** from [git-scm.com](https://git-scm.com/).
 2. Open **cmd** and get the code:
    ```
