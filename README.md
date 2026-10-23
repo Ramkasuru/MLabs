@@ -2,16 +2,79 @@
 
 *Your next masterpiece.* A complete music studio built from the ground up: step sequencer, piano roll, playlist, a 16-insert mixer with 21 effects, and AI that composes, mixes, masters and turns your hum into any instrument. Python audio engine (numpy) with an HTML/CSS interface in a native desktop window (pywebview).
 
-## Run it
+## Install
 
-```
-pip install -r requirements.txt     # on an NVIDIA GPU, install the CUDA build of torch first (see requirements.txt)
-python get_sounds.py                # optional: free VCSL drums + percussion (CC0, ~1.5 GB)
-python app.py
-python test_engine.py               # 36 self-checks for the engine, AI roles, audio I/O
-```
+MLabs runs on **Windows 10/11** (the window uses Microsoft Edge WebView2, which Windows 11 already has; on Windows 10 get the free "Evergreen" runtime from Microsoft if the window stays blank). macOS and Linux are untested.
 
-**AI hardware:** **an NVIDIA GPU with 4 GB+ VRAM (8 GB for Perfect pitch AI) and the CUDA build of PyTorch.** Without one the AI runs on the CPU, roughly 10× slower. Models download on first use (about 2–4 GB) and load in the background at startup.
+1. Install **Python 3.12 or newer** from [python.org](https://www.python.org/downloads/) (tick "Add python.exe to PATH") and **Git** from [git-scm.com](https://git-scm.com/).
+2. Open **cmd** and get the code:
+   ```
+   git clone https://github.com/Ramkasuru/MLabs.git
+   cd MLabs
+   ```
+3. Optional but recommended: a virtual environment so MLabs' packages stay separate.
+   ```
+   python -m venv .venv
+   .venv\Scripts\activate
+   ```
+4. **NVIDIA GPU?** Install the CUDA build of PyTorch first, so the AI runs on the graphics card:
+   ```
+   pip install torch --index-url https://download.pytorch.org/whl/cu130
+   ```
+   No NVIDIA GPU: skip this step; the AI still works on the CPU, about 10× slower.
+5. Install everything else:
+   ```
+   pip install -r requirements.txt
+   ```
+6. Optional: free drum and percussion samples (VCSL, public domain, about 1.5 GB):
+   ```
+   python get_sounds.py
+   ```
+7. Start MLabs:
+   ```
+   python app.py
+   ```
+   Next time, just `cd MLabs` (and `.venv\Scripts\activate` if you made one), then `python app.py`.
+
+Optional extras:
+- **Custom VST3 plugins:** `pip install pedalboard` (GPL-3 licensed, so it is not installed by default), then use "Add custom plugin…" in the plugin picker (F8).
+- **Self-check:** `python test_engine.py` runs 36 tests of the engine, AI roles and audio I/O.
+
+**AI hardware:** **an NVIDIA GPU with 4 GB+ VRAM (8 GB for Perfect pitch AI) and the CUDA build of PyTorch.** Models download on first use (about 2–4 GB, cached afterwards) and load in the background at startup.
+
+## Using MLabs
+
+**Make a first beat**
+1. Press **Space** to play and stop. The **Step Rack** (F6) shows one row per instrument; click the squares to turn steps on.
+2. Add instruments from the **ADD** menu or the plugin picker (**F8**): drums, synths, bass, keys and samplers.
+3. For melodies, select a channel and open the **piano roll** (**F7**). Click to draw notes, drag their ends to change length, right-drag to erase.
+4. Sounds: open the **SOUNDS** tab on the left, click a row to preview, double-click to add it as a channel. "+ Add folder…" adds any folder of WAVs you already own.
+
+**Build a song**
+1. Make more patterns with **F4** (or the pattern menu in the top bar).
+2. Switch the top bar from **PAT** to **SONG** and paint patterns onto the **playlist** (F5). Right-drag erases.
+3. Drag a sound from the SOUNDS tab onto the playlist for an **audio clip**.
+4. Right-click any volume or pan knob, or a mixer fader, and choose **Create automation clip** to draw a fade or sweep over time.
+
+**Mix**
+1. Open the **mixer** (**F9**). Each channel plays through its own insert track; the Step Rack shows the number.
+2. Pick an effect in one of a track's 10 slots, then **double-click the slot** to open its plugin window with all of its knobs. Double-click a knob to reset it.
+3. Route tracks to a group bus with the dropdown under each fader; mute and solo with the buttons above it.
+
+**Use the AI** (left panel)
+- **AI tab:** pick a role. **Composer** turns a text description into a music clip; **Mix engineer** balances levels and panning; **Mastering engineer** adds EQ, compression and a limiter on Master.
+- **PITCH tab (Perfect pitch):** record a hum or an instrument, check the notes it heard, then turn them into a melody, guitar, bass, keys, pad or drum hits, or let the AI perform it.
+- Every AI change can be undone with **Ctrl+Z**.
+
+**Record and play live**
+- Connect a MIDI keyboard and play the selected channel, or press **Ctrl+T** to play with your computer keyboard.
+- The red **●** button records from your mic or audio interface; pick devices with **F10**.
+
+**Save and export**
+- **Ctrl+S** saves the project (a .json file); **Ctrl+O** opens one.
+- **Ctrl+E** exports the song as WAV, FLAC or MP3, or as separate stems. **File → Export MIDI** saves the notes.
+
+Lost a window? **F12** closes them all, and the **View** menu brings each one back. Options → Show tips replays the startup tips.
 
 ## What's in it
 
